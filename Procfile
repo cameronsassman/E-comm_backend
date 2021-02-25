@@ -1,0 +1,1 @@
+web: gunicorn lonely_fans:app
