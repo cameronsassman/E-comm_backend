@@ -12,7 +12,7 @@ def init_sqlite_db():
     conn = sqlite3.connect('database.db')
     print("Opened database successfully")
 
-    conn.execute('CREATE TABLE IF NOT EXISTS Products (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, character TEXT, style TEXT, gender TEXT, colour TEXT, size TEXT, description TEXT)')
+    conn.execute('CREATE TABLE IF NOT EXISTS Products (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, character TEXT, style TEXT, gender TEXT, colour TEXT, size TEXT, description TEXT, image TEXT)')
     print("Table created successfully")
     conn.close()
 
@@ -21,7 +21,7 @@ init_sqlite_db()
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/add-new-record/', methods=['POST'])
+@app.route('/add-record/', methods=['POST'])
 def add_new_record():
     if request.method == "POST":
         msg = None
@@ -33,12 +33,13 @@ def add_new_record():
             colour = request.form['colour']
             size = request.form['size']
             description = request.form['description']
+            image = request.form['image']
 
             with sqlite3.connect('database.db') as con:
                 cur = con.cursor()
-                cur.execute("INSERT INTO Users (name, character, style, gender, colour, size, description) "
-                            "VALUES (?, ?, ?, ?, ?, ?,?)",
-                            (name, character, style, gender, colour, size, description))
+                cur.execute("INSERT INTO Users (name, character, style, gender, colour, size, description, image) "
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                            (name, character, style, gender, colour, size, description, image))
                 con.commit()
                 msg = "Record successfully added."
 
