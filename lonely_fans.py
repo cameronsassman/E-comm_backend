@@ -21,7 +21,7 @@ init_sqlite_db()
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/add-record/', methods=['POST'])
+@app.route('/add-record/', methods=["POST"])
 def add_new_record():
     if request.method == "POST":
         msg = None
