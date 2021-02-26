@@ -47,7 +47,7 @@ def add_new_record():
 
             with sqlite3.connect('database.db') as con:
                 cur = con.cursor()
-                cur.execute("INSERT INTO Users (name, character, style, gender, colour, size, description, image) "
+                cur.execute("INSERT INTO Products (name, character, style, gender, colour, size, description, image) "
                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                             (name, character, style, gender, colour, size, description, image))
                 con.commit()
@@ -67,7 +67,7 @@ def show_records():
         with sqlite3.connect('database.db') as con:
             con.row_factory=dict_factory
             cur = con.cursor()
-            cur.execute("SELECT * FROM Users")
+            cur.execute("SELECT * FROM Products")
             records = cur.fetchall()
     except Exception as e:
             con.rollback()
