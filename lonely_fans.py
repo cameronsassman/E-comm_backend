@@ -20,6 +20,7 @@ def init_sqlite_db():
                  'gender TEXT, '
                  'colour TEXT, '
                  'size TEXT, '
+                 'price TEXT, '
                  'description TEXT, '
                  'image TEXT)'
                  )
@@ -42,14 +43,15 @@ def add_new_record():
             gender = request.form['gender']
             colour = request.form['colour']
             size = request.form['size']
+            price = request.form['price']
             description = request.form['description']
             image = request.form['image']
 
             with sqlite3.connect('database.db') as con:
                 cur = con.cursor()
-                cur.execute("INSERT INTO Products (name, character, style, gender, colour, size, description, image) "
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                            (name, character, style, gender, colour, size, description, image))
+                cur.execute("INSERT INTO Products (name, character, style, gender, colour, size, price, description, image) "
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                            (name, character, style, gender, colour, size, price, description, image))
                 con.commit()
                 msg = "Record successfully added."
 
