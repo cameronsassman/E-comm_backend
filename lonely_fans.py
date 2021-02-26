@@ -2,9 +2,9 @@ import sqlite3
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-def dict_factory(cursor, row):
-    d={}
-    for idx,col in enumerate(cursor.description):
+def dict_factory(cursor,row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
     return d
 
@@ -12,7 +12,17 @@ def init_sqlite_db():
     conn = sqlite3.connect('database.db')
     print("Opened database successfully")
 
-    conn.execute('CREATE TABLE IF NOT EXISTS Products (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, character TEXT, style TEXT, gender TEXT, colour TEXT, size TEXT, description TEXT, image TEXT)')
+    conn.execute('CREATE TABLE IF NOT EXISTS Products '
+                 '(id INTEGER PRIMARY KEY AUTOINCREMENT, '
+                 'name TEXT, '
+                 'character TEXT, '
+                 'style TEXT, '
+                 'gender TEXT, '
+                 'colour TEXT, '
+                 'size TEXT, '
+                 'description TEXT, '
+                 'image TEXT)'
+                 )
     print("Table created successfully")
     conn.close()
 
