@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 
 def dict_factory(cursor,row):
@@ -31,6 +31,10 @@ init_sqlite_db()
 
 app = Flask(__name__)
 CORS(app)
+
+@app.route('/test/')
+def test():
+    return render_template('test.html')
 
 @app.route('/add-record/', methods=["POST"])
 def add_new_record():
