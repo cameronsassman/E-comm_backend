@@ -12,7 +12,7 @@ def init_sqlite_db():
     conn = sqlite3.connect('database.db')
     print("Opened database successfully")
 
-    conn.execute('CREATE TABLE IF NOT EXISTS Products '
+    conn.execute('CREATE TABLE IF NOT EXISTS Products'
                  '(id INTEGER PRIMARY KEY AUTOINCREMENT, '
                  'name TEXT, '
                  'character TEXT, '
@@ -53,7 +53,7 @@ def add_new_record():
 
             with sqlite3.connect('database.db') as con:
                 cur = con.cursor()
-                cur.execute("INSERT INTO Products "
+                cur.execute("INSERT INTO Products"
                             "(name, character, style, gender, colour, size, price, description, image) "
                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                             (name, character, style, gender, colour, size, price, description, image))
