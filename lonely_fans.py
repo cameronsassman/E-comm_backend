@@ -53,7 +53,8 @@ def add_new_record():
 
             with sqlite3.connect('database.db') as con:
                 cur = con.cursor()
-                cur.execute("INSERT INTO Products (name, character, style, gender, colour, size, price, description, image) "
+                cur.execute("INSERT INTO Products "
+                            "(name, character, style, gender, colour, size, price, description, image) "
                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                             (name, character, style, gender, colour, size, price, description, image))
                 con.commit()
@@ -66,7 +67,7 @@ def add_new_record():
             con.close()
             return jsonify(msg)
 
-@app.route('/show-records/', methods=["GET"])
+@app.route('/show-records/',methods=["GET"])
 def show_records():
     records = []
     try:
