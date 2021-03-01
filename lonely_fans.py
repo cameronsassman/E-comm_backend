@@ -41,15 +41,16 @@ def add_new_record():
     if request.method == "POST":
         msg = None
         try:
-            name = request.form['name']
-            character = request.form['character']
-            style = request.form['style']
-            gender = request.form['gender']
-            colour = request.form['colour']
-            size = request.form['size']
-            price = request.form['price']
-            description = request.form['description']
-            image = request.form['image']
+            post_data = request.get_json()
+            name = post_data['name']
+            character = post_data['character']
+            style = post_data['style']
+            gender = post_data['gender']
+            colour = post_data['colour']
+            size = post_data['size']
+            price = post_data['price']
+            description = post_data['description']
+            image = post_data['image']
 
             with sqlite3.connect('database.db') as con:
                 cur = con.cursor()
