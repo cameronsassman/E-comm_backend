@@ -84,5 +84,25 @@ def show_records():
         con.close()
         return jsonify(records)
 
+
+@app.route('/delete-record/<int:id>/', methods=['GET'])
+def delete_product(id):
+
+    msg= None
+
+    try:
+        with sqlite3.connect('database.db') as con:
+            cur =con.cursor()
+            cur.execute("DELETE FROM Products WHERE id=" + str(id))
+            con.commit()
+            msg= "Product was successfully deleted from table"
+    except Exception as e:
+        con.rollback()
+        msg="error occcured while deleting product" + str(e)
+    finally:
+        con.close()
+        return (msg)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
