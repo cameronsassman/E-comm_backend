@@ -73,7 +73,7 @@ def show_records():
     records = []
     try:
         with sqlite3.connect('database.db') as con:
-            con.row_factory=dict_factory
+            con.row_factory = dict_factory
             cur = con.cursor()
             cur.execute("SELECT * FROM Products")
             records = cur.fetchall()
@@ -88,17 +88,17 @@ def show_records():
 @app.route('/delete-record/<int:id>/', methods=['GET'])
 def delete_product(id):
 
-    msg= None
+    msg = None
 
     try:
         with sqlite3.connect('database.db') as con:
             cur =con.cursor()
             cur.execute("DELETE FROM Products WHERE id=" + str(id))
             con.commit()
-            msg= "Product was successfully deleted from table"
+            msg = "Product was successfully deleted from table"
     except Exception as e:
         con.rollback()
-        msg="error occcured while deleting product" + str(e)
+        msg ="error occcured while deleting product" + str(e)
     finally:
         con.close()
         return (msg)
