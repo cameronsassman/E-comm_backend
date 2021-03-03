@@ -32,7 +32,7 @@ def init_sqlite_db():
                  'email Text, '
                  'username TEXT, '
                  'password TEXT,'
-                 'inCart)')
+                 'inCart TEXT)')
     print("Table created successfully")
     conn.close()
 
@@ -94,7 +94,7 @@ def add_new_user():
                 cur = con.cursor()
                 cur.execute("INSERT INTO User"
                             "(name, surname, email, username, password, inCart) "
-                            "VALUES (?, ?, ?, ?, ?)",
+                            "VALUES (?, ?, ?, ?, ?, ?)",
                             (name, surname, email, username, password, inCart))
                 con.commit()
                 msg = "You have successfully signed up as a Lonely Fans user :)"
@@ -105,6 +105,24 @@ def add_new_user():
         finally:
             con.close()
             return jsonify(msg)
+
+
+@app.route('/show-users/', methods=["GET"])
+def show_users():
+    records = []
+    try:
+        with sqlite3.connect('database.db') as con:
+            con.row_factory = dict_factory
+            cur = con.cursor()
+            cur.execute("SELECT * FROM User")
+            records = cur.fetchall()
+    except Exception as e:
+            con.rollback()
+            print("There was an error fetching results from the database.")
+    finally:
+        con.close()
+        return jsonify(records)
+
 
 @app.route('/show-records/',methods=["GET"])
 def show_records():
