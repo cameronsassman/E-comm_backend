@@ -79,10 +79,26 @@ def show_records():
             records = cur.fetchall()
     except Exception as e:
             con.rollback()
-            print("There was an error fetching results from the database.")
+            print("There was an error fetching results from the database.") + str(e)
     finally:
         con.close()
         return jsonify(records)
+
+@app.route('/show-record-item/<int:product_id',methods=["GET"])
+def show_record_item(product_id):
+    record = []
+    try:
+        with sqlite3.connect('database.db') as con:
+            con.row_factory = dict_factory
+            cur = con.cursor()
+            cur.execute("SELECT * FROM Products WHERE id=" + str(product_id))
+            record = cur.fetchone()
+    except Exception as e:
+            con.rollback()
+            print("There was an error fetching results from the database.") + str(e)
+    finally:
+        con.close()
+        return jsonify(record)
 
 
 @app.route('/delete-record/<int:id>/', methods=['GET'])
