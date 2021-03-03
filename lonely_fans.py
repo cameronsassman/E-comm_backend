@@ -79,12 +79,12 @@ def show_records():
             records = cur.fetchall()
     except Exception as e:
             con.rollback()
-            print("There was an error fetching results from the database.") + str(e)
+            print("There was an error fetching results from the database.")
     finally:
         con.close()
         return jsonify(records)
 
-@app.route('/show-record-item/<int:product_id',methods=["GET"])
+@app.route('/show-record-item/<int:product_id>/', methods=["GET"])
 def show_record_item(product_id):
     record = []
     try:
