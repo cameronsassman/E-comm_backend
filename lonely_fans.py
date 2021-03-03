@@ -24,6 +24,15 @@ def init_sqlite_db():
                  'description TEXT, '
                  'image TEXT)'
                  )
+
+    conn.execute('CREATE TABLE IF NOT EXISTS User'
+                 '(id INTEGER PRIMARY KEY AUTOINCREMENT, '
+                 'name TEXT, '
+                 'surname TEXT, '
+                 'email Text, '
+                 'username TEXT, '
+                 'password TEXT,'
+                 'inCart)')
     print("Table created successfully")
     conn.close()
 
@@ -60,6 +69,35 @@ def add_new_record():
                             (name, character, style, gender, colour, size, price, description, image))
                 con.commit()
                 msg = "Record successfully added."
+
+        except Exception as e:
+            con.rollback()
+            msg = "Error occurred in insert operation: " + str(e)
+        finally:
+            con.close()
+            return jsonify(msg)
+
+@app.route('/add-user/', methods=["POST"])
+def add_new_user():
+    if request.method == "POST":
+        msg = None
+        try:
+            post_data = request.get_json()
+            name = post_data['name']
+            surname = post_data['surname']
+            email = post_data['email']
+            username = post_data['username']
+            password = post_data['password']
+            inCart = post_data['inCart']
+
+            with sqlite3.connect('database.db') as con:
+                cur = con.cursor()
+                cur.execute("INSERT INTO User"
+                            "(name, surname, email, username, password, inCart) "
+                            "VALUES (?, ?, ?, ?, ?)",
+                            (name, surname, email, username, password, inCart))
+                con.commit()
+                msg = "You have successfully signed up as a Lonely Fans user :)"
 
         except Exception as e:
             con.rollback()
@@ -115,6 +153,24 @@ def delete_product(id):
     except Exception as e:
         con.rollback()
         msg ="error occcured while deleting product" + str(e)
+    finally:
+        con.close()
+        return (msg)
+
+@app.route('/delete-user/<int:id>/', methods=['GET'])
+def delete_user(id):
+
+    msg = None
+
+    try:
+        with sqlite3.connect('database.db') as con:
+            cur =con.cursor()
+            cur.execute("DELETE FROM User WHERE id=" + str(id))
+            con.commit()
+            msg = "user was successfully deleted from table"
+    except Exception as e:
+        con.rollback()
+        msg ="error occcured while deleting user" + str(e)
     finally:
         con.close()
         return (msg)
