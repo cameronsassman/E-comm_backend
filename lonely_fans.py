@@ -107,6 +107,22 @@ def add_new_user():
             return jsonify(msg)
 
 
+@app.route('/cart/<int:user_id>/<int:product_id>/', methods=["GET"])
+def update_cart(user_id, product_id):
+    msg = None
+    try:
+        with sqlite3.connect('database.db') as connection:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE User SET inCart=? WHERE id=?", (user_id, product_id))
+            connection.commit()
+        msg = "Product updated successfully."
+    except Exception as e:
+        print('Something happened while updating data: ' + str(e))
+        msg = 'Something happened while updating data: ' + str(e)
+    finally:
+        connection.close()
+        return jsonify(msg)
+
 @app.route('/show-users/', methods=["GET"])
 def show_users():
     records = []
@@ -139,6 +155,7 @@ def show_records():
     finally:
         con.close()
         return jsonify(records)
+
 
 @app.route('/show-record-item/<int:product_id>/', methods=["GET"])
 def show_record_item(product_id):
